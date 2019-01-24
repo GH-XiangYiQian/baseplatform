@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.basics.mapper.basemapper.SysMenuMapper">
+	<resultMap id="BaseResultMap" type="com.platform.basics.entity.SysMenu">
+	    <!--
+	      WARNING - @mbg.generated
+	    -->
+	    <id column="id" jdbcType="INTEGER" property="id" />
+	    <result column="icon" jdbcType="VARCHAR" property="icon" />
+	    <result column="pid" jdbcType="INTEGER" property="pid" />
+	    <result column="level" jdbcType="INTEGER" property="level" />
+	    <result column="name" jdbcType="VARCHAR" property="name" />
+	    <result column="soft" jdbcType="INTEGER" property="soft" />
+	    <result column="url" jdbcType="VARCHAR" property="url" />
+	    <result column="level_number" jdbcType="INTEGER" property="levelNumber" />
+	    <result column="iframe" jdbcType="INTEGER" property="iframe"/>
+	    <result column="sys" jdbcType="TINYINT" property="sys" />
+	    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+	    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  	</resultMap>
+  	
+  	<sql id="columns">
+  		id
+		,icon
+		,pid
+		,level
+		,name
+		,soft
+		,url
+		,level_number
+		,iframe
+		,sys
+		,gmt_create
+		,gmt_modified
+  	</sql>
+  
+	<select id="findSysMenuByRoles" parameterType="com.platform.basics.entity.SysRole" resultMap="BaseResultMap">
+	  	SELECT 
+			B.id
+			,B.icon
+			,B.pid
+			,B.level
+			,B.name
+			,B.soft
+			,B.url
+			,B.level_number
+			,B.iframe
+			,B.sys
+			,B.gmt_create
+			,B.gmt_modified
+		FROM 
+			sys_role_menu A
+		LEFT JOIN 
+			sys_menu B
+		ON
+			A.menu_id = B.id
+		WHERE 
+			A.role_id IN 
+			<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+                <if test="(index % 999) == 998"> NULL ) OR A.role_id IN (</if>#{item.id}
+            </foreach>
+        GROUP By
+        	B.id
+			,B.icon
+			,B.pid
+			,B.level
+			,B.name
+			,B.soft
+			,B.url
+			,B.level_number
+			,B.sys
+  	</select>
+  	
+  	<select id="findParentMenu" resultMap="BaseResultMap">
+  		SELECT
+  			<include refid="columns"/>
+  		FROM
+  			sys_menu 
+  		WHERE
+  			pid = 0
+  	</select>
+  	
+</mapper>

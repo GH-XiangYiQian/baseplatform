@@ -1,0 +1,131 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    type: com.alibaba.druid.pool.xa.DruidXADataSource
+    druid:
+      systemDB: 
+        name: systemDB
+        url: jdbc:mysql://localhost:3306/baseplatform_db?useUnicode=true&characterEncoding=utf-8
+        username: root
+        password: 123456
+        # 下面为连接池的补充设置，应用到上面所有数据源中
+        # 初始化大小，最小，最大
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+        # 配置获取连接等待超时的时间
+        maxWait: 60000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        timeBetweenEvictionRunsMillis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdleTimeMillis: 30
+        validationQuery: SELECT 1
+        validationQueryTimeout: 10000
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        # 打开PSCache，并且指定每个连接上PSCache的大小
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        filters: stat,wall
+        # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+        # 合并多个DruidDataSource的监控数据
+        useGlobalDataSourceStat: true
+
+      businessDB: 
+        name: businessDB
+        url: jdbc:mysql://localhost:3306/obeyplatform_db?useUnicode=true&characterEncoding=utf-8
+        username: root
+        password: 123456
+        # 下面为连接池的补充设置，应用到上面所有数据源中
+        # 初始化大小，最小，最大
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+        # 配置获取连接等待超时的时间
+        maxWait: 60000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        timeBetweenEvictionRunsMillis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdleTimeMillis: 30
+        validationQuery: SELECT 1
+        validationQueryTimeout: 10000
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        # 打开PSCache，并且指定每个连接上PSCache的大小
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        filters: stat,wall
+        # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+        # 合并多个DruidDataSource的监控数据
+        useGlobalDataSourceStat: true
+  #jta相关参数配置
+  jta:
+    log-dir: classpath:tx-logs
+    transaction-manager-id: txManager
+    
+  #thymeleaf 模板引擎
+  thymeleaf:
+    prefix: classpath:/templates
+    suffix: .html
+    servlet:
+      content-type: text/html; charset=utf-8
+    cache: false
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    
+  # mvc配置
+  mvc: 
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: ""
+    # 连接超时时间（毫秒）
+    timeout: 2000ms
+    jedis:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 8
+        # 连接池中的最大空闲连接
+        max-idle: 500
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 2000
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: 5000ms
+    
+#系统配置            
+sysproperties: 
+  #是否开启登陆日志
+  loginAopLog: true
+  #是否开启操作日志
+  openAopLog: true
+  #shiro配置
+  shiro: 
+    #session 30分钟
+    session-timeout: 1800000
+    #记住密码1天
+    cookie-timeout: 86400
+    #redis缓存时长
+    expire-in: 1800
+    #登录
+    login-url: /login.html
+    #登陆成功跳转的路径
+    success-url: /index
+    #退出
+    logout-url: /logout
+    #未授权跳转
+    unauthorized-url: /exception/403
+    #避免认证
+    anon-urls: /css/**,/js/**,/images/**,/img/**,/plugins/**,/test/**,/logout,/login,/validatecode
+    

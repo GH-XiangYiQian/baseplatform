@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.basics.mapper.basemapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.platform.basics.entity.User">
+        <result property="id" column="id"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="user_name"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="idCardNo" column="idcardno"/>
+        <result property="birthday" column="birthday"/>
+        <result property="mail" column="mail"/>
+        <result property="addressProvincial" column="address_provincial"/>
+        <result property="addressCity" column="address_city"/>
+        <result property="addressCounty" column="address_county"/>
+        <result property="detailedAddress" column="detailed_address"/>
+        <result property="icon" column="icon"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <collection property="sysRoles" ofType="com.platform.basics.entity.SysRole" column="id">
+        	<result property="id" column="rid"/>
+        	<result property="roleCode" column="role_code" />
+        	<result property="roleName" column="role_name"/>
+        	<result property="remark" column="remark"/>
+        	<result property="gmtCreate" column="role_gmt_create"/>
+        	<result property="gmtModified" column="role_gmt_modified"/>
+        </collection>
+    </resultMap>
+
+    <sql id="columns">
+        id
+        ,account
+        ,password
+        ,user_name
+        ,sex
+        ,age
+        ,idcardno
+        ,mail
+        ,address_provincial
+        ,address_city
+        ,address_county
+        ,detailed_address
+        ,icon
+        ,gmt_create
+        ,gmt_modified
+    </sql>
+
+    <sql id="conditionsql">
+        <if test="account != null and account != ''">
+            AND account = #{account}
+        </if>
+        <if test="password != null and password != ''">
+            AND password = #{password}
+        </if>
+        <if test="userName != null and userName != ''">
+            AND  user_name = #{userName}
+        </if>
+        <if test="sex != null">
+            AND sex = #{sex}
+        </if>
+        <if test="age != 0">
+            AND age = #{age}
+        </if>
+        <if test="idCardNo != null and idCardNo !=''">
+            AND idcardno = #{idCardNo}
+        </if>
+        <if test="birthday != null">
+            AND birthday = #{birthday}
+        </if>
+        <if test="mail != null and mail != ''">
+            AND mail = #{mail}
+        </if>
+        <if test="addressProvincial != null and addressProvincial != ''">
+            AND address_provincial = #{addressProvincial}
+        </if>
+        <if test="addressCity != null and addressCity !=''">
+            AND address_city = #{addressCity}
+        </if>
+        <if test="addressCounty != null and addressCounty !=''">
+            AND address_county = #{addressCounty}
+        </if>
+        <if test="detailedAddress != null and detailedAddress !=''">
+            AND detailed_address = #{detailedAddress}
+        </if>
+    </sql>
+
+    <sql id="vaguesql">
+        <if test="account != null and account != ''">
+            AND account LIKE '%'#{account}'%'
+        </if>
+        <if test="password != null and password != ''">
+            AND password LIKE '%'#{password}'%'
+        </if>
+        <if test="userName != null and userName != ''">
+            AND  user_name LIKE '%'#{userName}'%'
+        </if>
+        <if test="sex != null">
+            AND sex LIKE '%'#{sex}'%'
+        </if>
+        <if test="age != 0">
+            AND age LIKE '%'#{age}'%'
+        </if>
+        <if test="idCardNo != null and idCardNo !=''">
+            AND idcardno LIKE '%'#{idCardNo}'%'
+        </if>
+        <if test="birthday != null">
+            AND birthday LIKE '%'#{birthday}'%'
+        </if>
+        <if test="mail != null and mail != ''">
+            AND mail LIKE '%'#{mail}'%'
+        </if>
+        <if test="addressProvincial != null and addressProvincial != ''">
+            AND address_provincial LIKE '%'#{addressProvincial}'%'
+        </if>
+        <if test="addressCity != null and addressCity !=''">
+            AND address_city LIKE '%'#{addressCity}'%'
+        </if>
+        <if test="addressCounty != null and addressCounty !=''">
+            AND address_county LIKE '%'#{addressCounty}'%'
+        </if>
+        <if test="detailedAddress != null and detailedAddress !=''">
+            AND detailed_address LIKE '%'#{detailedAddress}'%'
+        </if>
+    </sql>
+    
+    <select id="getUser" parameterType="com.platform.basics.entity.User" resultMap="BaseResultMap">
+    	SELECT
+    		<include refid="columns"/>
+    	FROM
+    		sys_user
+    	<where>
+    		<include refid="conditionsql"/>
+    	</where>
+    </select>
+    
+    <select id="userList" parameterType="com.platform.basics.entity.User" resultMap="BaseResultMap">
+        SELECT
+          <include refid="columns"/>
+        FROM
+          sys_user
+        <where>
+            <include refid="vaguesql"/>
+        </where>
+    </select>
+    
+    <select id="getUserById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	SELECT
+    		A.id
+	       ,A.account
+	       ,A.password
+	       ,A.user_name
+	       ,A.sex
+	       ,A.age
+	       ,A.idcardno
+	       ,A.mail
+	       ,A.address_provincial
+	       ,A.address_city
+	       ,A.address_county
+	       ,A.detailed_address
+	       ,A.icon
+	       ,A.gmt_create
+	       ,A.gmt_modified
+	       ,C.id 					AS 'rid'
+	       ,C.role_code
+	       ,C.role_name
+	       ,C.remark
+	       ,C.gmt_create			AS 'role_gmt_create'
+	       ,C.gmt_modified			AS 'role_gmt_modified'
+	   	FROM
+    		sys_user A
+    	LEFT JOIN
+    		sys_user_role B
+    	ON
+    		A.id = B.user_id
+    	LEFT JOIN
+    		sys_role C
+    	ON
+    		B.role_id = C.id
+    	<where>
+    		<if test="id != null">
+    			AND A.id = #{id}
+    		</if>
+    	</where>
+    </select>
+    
+    <select id="findUserByAccount" parameterType="java.lang.String" resultMap = "BaseResultMap">
+    	SELECT
+    		<include refid="columns"/>
+    	FROM
+    		sys_user
+    	<where>
+    		<if test="account != null and account !=''">
+    			AND account = #{account}
+    		</if>
+    	</where>
+    </select>
+</mapper>

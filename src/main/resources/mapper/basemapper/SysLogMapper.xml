@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.basics.mapper.basemapper.SysLogMapper">
+	<resultMap type="com.platform.basics.entity.SysLog" id="BaseResultMap">
+		<result column="id" property="id"/>
+		<result column="user_name" property="userName"/>
+		<result column="ip" property="ip"/>
+		<result column="location" property="location"/>
+		<result column="method" property="method"/>
+		<result column="operation" property="operation"/>
+		<result column="params" property="params"/>
+		<result column="excute_time" property="excuteTime"/>
+	</resultMap>
+	
+	<sql id="columns">
+		id
+		,user_name
+		,ip
+		,location
+		,method
+		,operation
+		,params
+		,excute_time
+		,gmt_create
+		,gmt_modified
+	</sql>
+	
+	<sql id="vaguesql">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="userName != null and userName != ''">
+			AND user_name LIKE '%'#{userName}'%'
+		</if>
+		<if test="ip != null and ip !=''">
+			AND ip LIKE '%'#{ip}'%'
+		</if>
+		<if test="location != null and location != ''">
+			AND location LIKE '%'#{location}'%' 
+		</if>
+		<if test="method != null and method != ''">
+			AND method LIKE '%'#{method}'%'
+		</if>
+		<if test="operation != null and operation !=''">
+			AND operation LIKE '%'#{operation}'%'
+		</if>
+	</sql>
+	
+	<select id="selects" resultMap="BaseResultMap">
+		SELECT
+			<include refid="columns"/>
+		FROM
+			sys_log
+		<where>
+			<include refid="vaguesql"/>
+		</where>
+	</select>
+</mapper>

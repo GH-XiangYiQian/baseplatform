@@ -1,0 +1,454 @@
+<div class="layui-fluid" style="font-size: 30px;text-align: center;">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md3">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              访客
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              新用户
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              销售额
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              成交量
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md12">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+          <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">源码</div>
+                <div class="layui-card-body">
+                    如果该系统你有帮助的话，还请点个star给予精神支持！项目相关的实现持续更新中~
+                  <p style="margin-bottom: 5px;">相关实现&nbsp;
+                    <a href='https://gitee.com/hgpt/SpringBoot_All'><img src='https://gitee.com/hgpt/SpringBoot_All/badge/star.svg?theme=gray' alt='star'></img></a>
+                  </p>
+                  <p style="margin-bottom: 5px;">项目源码&nbsp;
+                    <a href='https://gitee.com/hgpt/Aurora' target="_blank"><img src='https://gitee.com/hgpt/Aurora/badge/star.svg?theme=gray' alt='star'></img></a>
+                  </p>
+                    <p style="margin-bottom: 5px;">github&nbsp;</p>
+                    <div class="github-widget-repo" data-repo="dqjdda/Aurora" style="width:100%;margin-top: 3px;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-col-md6">
+              <div class="layui-card">
+                <div class="layui-card-header">ECharts</div>
+                <div class="layui-card-body">
+                  <div id="container1" style="height:350px;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-col-md6">
+              <div class="layui-card">
+                <div class="layui-card-header">ECharts</div>
+                <div class="layui-card-body">
+                  <div id="main" style="height:350px;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">ECharts</div>
+                <div class="layui-card-body">
+                  <div id="main1" style="height:350px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md4">
+          <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">快捷入口</div>
+                <div class="layui-card-body">
+                  <div class="layui-row layui-col-space5">
+                    <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                      <div style="height:75px;  background-color:#ccc;"></div>
+                    </div>
+                    <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+                      <div style="height:75px;  background-color:#ccc;"></div>
+                    </div>
+                    <div class="layui-col-xs4 layui-col-sm12 layui-col-md4">
+                      <div style="height:75px;  background-color:#ccc;"></div>
+                    </div>
+                    <div class="layui-col-xs4 layui-col-sm7 layui-col-md8">
+                      <div style="height:75px;  background-color:#ccc;"></div>
+                    </div>
+                    <div class="layui-col-xs4 layui-col-sm5 layui-col-md4">
+                      <div style="height:75px;  background-color:#ccc;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">版本信息</div>
+                <div class="layui-card-body">
+                  <table class="layui-table">
+                    <colgroup>
+                      <col width="150">
+                      <col>
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <td>版本号</td>
+                        <td>v1.1</td>
+                      </tr>
+                      <tr>
+                        <td>前端框架</td>
+                        <td>layui v2.4.3</td>
+                      </tr>
+                      <tr>
+                        <td>作者</td>
+                        <td><a href="https://www.zhengjie.me">zhengjie</a></td>
+                      </tr>
+                      <tr>
+                        <td>邮箱</td>
+                        <td>zhengjie@tom.com</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">关于Aurora</div>
+                <div class="layui-card-body">
+                  <ul class="layui-timeline">
+
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">特别感谢以下开源项目：</h3>
+                        <p>
+                          <ul>
+                          <li>前端框架：基于layui的<a href="https://gitee.com/kitteam/kit_admin/" target="_blank">kit-admin</a></li>
+                          <li>树形表格：基于layui的<a href="https://gitee.com/beijiyi/tree_table_treegrid_based_on_layui" target="_blank">treeGrid</a></li>
+                          <li>Java工具包：<a href="http://hutool.mydoc.io/" target="_blank">Hutool</a></li>
+                          <li>Redis终端：<a href="https://mrbird.cc/" target="_blank">mrbird</a></li>
+                          <li>ip地址定位库：<a href="https://gitee.com/lionsoul/ip2region" target="_blank">ip2region</a></li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">2018年9月5日 (v1.0)</h3>
+                        <p>
+                          <b>#完成了后台基本搭建,暂无成任何集成</b>
+                        <ul>
+                          <li>主要框架：spring boot+Shiro+Redis</li>
+                          <li>页面模板：Thymeleaf 3.0.9.RELEASE</li>
+                          <li>权限管理：采用的是RBAC思想</li>
+                          <li>密码加密：采用MD5加盐加密</li>
+                          <li>系统日志：使用aop保存日志</li>
+                          <li>实体映射：使用MapStruct</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">2018年9月22日 (v1.0.1)</h3>
+                        <p>
+                          <b>#新增了一些常用功能</b>
+                        <ul>
+                          <li>基于redis+shiro的在线用户管理</li>
+                          <li>redis终端管理</li>
+                          <li>SM.MS免费图床</li>
+                          <li>统一异常处理</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">2018年9月28日 (v1.0.1)</h3>
+                        <p>
+                          <b>#集成了第三方工具</b>
+                        <ul>
+                          <li>百度富文本编辑器</li>
+                          <li>邮件发送工具</li>
+                          <li>支付宝支付</li>
+                          <li>七牛云储存</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">2018年10月6日 (v1.1)</h3>
+                        <p>
+                          <b>#v1.1发布，集成任务调度</b>
+                        <ul>
+                          <li>任务调度</li>
+                          <li>调度日志</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        更新说明
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- build:js -->
+<!-- <script th:src="@{'/js/github_repo_widget_en.js'}"></script>
+<script>
+  layui.config({
+    base: '/src/js/'
+  }).use(['jquery', 'mockjs', 'table'], function() {
+    var $ = layui.jquery,
+      layer = layui.layer,
+      table = layui.table;
+
+    var intervalIndex = setInterval(function() {
+      if (echarts === undefined) {
+        return;
+      }
+      // 如果eacharts加载完成，则清除循环
+      clearInterval(intervalIndex);
+      //echarts
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main'));
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          text: 'ECharts 入门示例'
+        },
+        tooltip: {},
+        legend: {
+          data: ['销量']
+        },
+        xAxis: {
+          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+        },
+        yAxis: {},
+        series: [{
+          name: '销量',
+          type: 'bar',
+          data: [5, 20, 36, 10, 10, 20]
+        }]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+
+      // echarts 1
+      var myChart1 = echarts.init(document.getElementById("container1"));
+      var app1 = {};
+      option1 = null;
+      app1.title = '极坐标系下的堆叠柱状图';
+
+      option1 = {
+        title: {
+          text: '某站点用户访问来源',
+          subtext: '纯属虚构',
+          x: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+        },
+        series: [{
+          name: '访问来源',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '60%'],
+          data: [{
+            value: 335,
+            name: '直接访问'
+          }, {
+            value: 310,
+            name: '邮件营销'
+          }, {
+            value: 234,
+            name: '联盟广告'
+          }, {
+            value: 135,
+            name: '视频广告'
+          }, {
+            value: 1548,
+            name: '搜索引擎'
+          }],
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }]
+      };
+      if (option1 && typeof option1 === "object") {
+        myChart1.setOption(option1, true);
+      }
+
+      // echart2
+      var myChart2 = echarts.init(document.getElementById("main1"));
+      var app2 = {};
+      option2 = null;
+      option2 = {
+        title: {
+          text: '堆叠区域图'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+        legend: {
+          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: [{
+          type: 'category',
+          boundaryGap: false,
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        }],
+        yAxis: [{
+          type: 'value'
+        }],
+        series: [{
+          name: '邮件营销',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {
+            normal: {}
+          },
+          data: [120, 132, 101, 134, 90, 230, 210]
+        }, {
+          name: '联盟广告',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {
+            normal: {}
+          },
+          data: [220, 182, 191, 234, 290, 330, 310]
+        }, {
+          name: '视频广告',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {
+            normal: {}
+          },
+          data: [150, 232, 201, 154, 190, 330, 410]
+        }, {
+          name: '直接访问',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {
+            normal: {}
+          },
+          data: [320, 332, 301, 334, 390, 330, 320]
+        }, {
+          name: '搜索引擎',
+          type: 'line',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'top'
+            }
+          },
+          areaStyle: {
+            normal: {}
+          },
+          data: [820, 932, 901, 934, 1290, 1330, 1320]
+        }]
+      };;
+      if (option2 && typeof option2 === "object") {
+        myChart2.setOption(option2, true);
+      }
+
+      $(window).on('resize', function() {
+        myChart.resize();
+        myChart1.resize();
+        myChart2.resize();
+      });
+    }, 50);
+
+    // 注入mock
+    layui.mockjs.inject({
+      'POST /demo/table/user': {
+        code: 0,
+        msg: "xxx",
+        count: 1000,
+        'data|20': [{
+          'id|+1': 1,
+          username: '@name',
+          sex: '@boolean',
+          city: '@city',
+          sign: '@csentence',
+          experience: '@integer',
+          score: '@integer',
+          classify: '@word',
+          wealth: '@integer',
+          auth: '@boolean'
+        }]
+      }
+    });
+  });
+  </script>
+endbuild
+<style scoped>
+</style> -->

@@ -1,0 +1,254 @@
+<div class="layui-fluid">
+	<div class="layui-row" style="overflow-y:hidden">
+		<div class="layui-card">
+			<div class="layui-card-header">权限管理</div>
+			<div class="layui-card-body">
+				<div class="layui-card-header">
+					<a id="add" shiro:hasAnyPermissions="admin,permission:all,permission:add" class="layui-btn layui-btn-xs">
+                        <i class="layui-icon"></i>
+                        <span>新增</span>
+                    </a>
+                    <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                        <i class="layui-icon">&#xe615;</i>
+                    </a>
+				</div>
+				<table class="layui-table" id="permission_table" lay-filter="tools"></table>
+			</div>
+		</div>
+	</div>
+	<div style="display: none;" id="edit_permission">
+		<div style="margin:20px;font-weight: 300;">
+	    	<form class="layui-form layui-form-pane" action="">
+	        	<div class="layui-form-item">
+	           		<label class="layui-form-label">权限名称</label>
+	            	<div class="layui-input-block">
+	                	<input name="perms" lay-verify="required" placeholder="请输入权限名，权限名不可重复" autocomplete="off" class="layui-input" type="text">
+	            	</div>
+	        	</div>
+	        	<div class="layui-form-item">
+	            	<label class="layui-form-label">上级类目</label>
+	            	<div class="layui-input-block" id="parent_menu">
+	                	<select id="parent_menu" name="pid" lay-verify="" lay-search>
+	                    	<option value="0">无</option>
+	                    	<option th:each="p:${data}" th:value="${p.id}">[[${p.remark}]]</option>
+	                	</select>
+	            	</div>
+	        	</div>
+	        	<div class="layui-form-item layui-form-text">
+	            	<label class="layui-form-label">权限说明</label>
+	            	<div class="layui-input-block">
+	                	<textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+	            	</div>
+	        	</div>
+	    	</form>
+    	</div>
+	</div>
+</div>
+<script type="text/html" id="operation">
+	<button shiro:hasAnyPermissions="admin,permission:all,permission:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+    <button shiro:hasAnyPermissions="admin,permission:all,permission:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+</script>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限编号</label>
+            <div class=layui-input-lump>
+                <input type="text" name="id" placeholder="请输入权限编号.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class=layui-input-lump>
+                <input type="text" name="permission" placeholder="请输入权限名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限说明</label>
+            <div class=layui-input-lump>
+                <input type="text" name="remark" placeholder="请输入权限说明.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script type="text/javascript">
+	$(function(){
+		layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
+			var layer = layui.layer;
+			var sidebar = layui.sidebar;
+			var table = layui.table;
+			var form = layui.form;
+			var treeGrid = layui.treeGrid;
+			//  表格渲染
+			treeGrid.render({
+				id:'ID'
+				,elem:'#permission_table'
+				,idField:'id'
+				,url:'/permission/findpermission'
+				,treeId:'id'
+				,treeUpId:'pid' // 树形父id字段名称
+				,treeShowName:'permission'
+				,height:'full-140'
+				,isFilter:false
+	            ,iconOpen:false//是否显示图标【默认显示】
+	            ,isOpenDefault:true//节点默认是展开还是折叠【默认展开】
+	            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+	            ,page: false
+	            ,cols: [
+	            	[
+		            	{field:'id', align:'center', width:70, title:'编号'}
+		            	,{field:'permission', title:'权限名称'}
+		            	,{field:'remark', title:'权限说明'}
+		            	,{field:'gmtCreate', title:'创建日期'}
+		            	,{field:'gmtModified', title:'更新日期'}
+		            	,{field:'operation', align:'center', width:150, toolbar: '#operation', title:'操作'}
+	            	]
+	            ]
+			});
+			
+			//监听搜索事件
+	        $('#search_hash').on('click', function () {
+	            var that = this;
+	            sidebar.render({
+	                elem: that,
+	                content: $('#search_tpl_hash').html(),
+	                title: '搜索',
+	                shade: true,
+	                width: '450px', //可以设置百分比和px
+	                done: function () {
+	                    form.render();
+	                    //监听提交
+	                    form.on('submit(formDemo_hash)', function (data) {
+	                        treeGrid.query('ID', {
+	                            where: {
+	                                id: $('input[name="id"]').val(),
+	                                permission: $('input[name="permission"]').val(),
+	                                remark: $('input[name="remark"]').val()
+	                            }
+	                            ,page: {
+	                                curr: 1 //重新从第 1 页开始
+	                            }
+	                        });
+	                        return false;
+	                    });
+	                }
+	            });
+	        });
+			
+			// 监听新增事件
+			$('#add').on('click',function(){
+				layer.open({
+					type: 1
+					,title: '添加权限'
+					,area: ['500px', '450px']
+					,btnAlign: 'c'
+					,shade: 0
+					,maxmin: true
+					,content: $('#edit_permission')
+					,btn: ['确认', '取消']
+					,yes: function(){
+						editPermission('/permission/insert',null);
+					}
+				})
+			})
+			//  新增保存权限
+			function editPermission(request_url,id) {
+				var name = $('input[name="perms"]').val();
+				var pid = $('select[name="pid"]').val();
+				var remark = $('textarea[name="remark"]').val();
+				if (name == null || name == "") {
+					layui.layer.msg("请输入菜单名称!", {icon: 5});
+					return;
+				}
+				$.ajax({
+					url: request_url,
+					type: 'POST',
+					data: {id:id,permission:name,pid:pid,remark:remark},
+					dataType: 'JSON',
+					success:function(result) {
+						if (result.code == 200) {
+							layui.use(['jquery', 'layer'], function () {
+							layer.closeAll();
+			                	layui.layer.msg(result.msg, {icon: 6});
+			                    	setTimeout(function() {
+			                    	treeGrid.reload('ID', {
+			                     		where: {}
+			                        	,page: {
+			                        		curr: 1  //重新从第一页开始
+			                        	}
+			                        });
+			                 	},1000)
+							});
+						} else {
+							layui.use(['jquery', 'layer'], function () {
+		                        layui.layer.msg(result.msg, {icon: 5});
+		                    });
+						}
+					}
+				})
+			}
+			
+			//监听工具栏的时间
+			treeGrid.on('tool(tools)', function(obj) {
+				var data = obj.data;
+				if (obj.event == "del") {
+					layer.confirm("你确定删除数据吗？如果存在下级节点<br/>则一并删除，此操作不能撤销！", {icon: 3 ,btnAlign: 'c', title:'提示'},
+							function(index) {  //确定回调
+								$.ajax({
+									url: '/permission/delete',
+									type: 'POST',
+									data: {id:data.id},
+									dataType: 'JSON',
+									success: function(result) {
+										if (result.code == 200) {
+											layer.close(index);
+		                                    layui.layer.msg("删除成功", {icon: 6});
+		                                    setTimeout(function () {
+		                                        treeGrid.reload('ID', {
+		                                            where: {}
+		                                            ,page: {
+		                                                curr: 1
+		                                            }
+		                                        });
+		                                    },1000);
+										} else {
+											layui.layer.msg(result.msg, {icon: 5});
+										}
+									}
+								})
+						},
+						function(index) {
+							layer.close(index);
+						}
+					)
+				} else if (obj.event == "edit") {
+					layer.open({
+						type: 1
+						,title: '修改权限'
+						,area: ['500px', '450px']
+						,btnAlign: 'c'
+						,shade: 0
+						,maxmin: true
+						,content: $('#edit_permission')
+						,btn: ['确认', '取消']
+						,yes: function() {
+							editPermission('/permission/update',data.id);
+						}
+					})
+					if (data.pid != 0) {
+						$('select[name="pid"]').val(data.pid);
+					} else {
+						$('select[name="pid"]').val(data.id);
+					}
+					layui.form.render('select');
+				}
+			})
+		})
+	})
+</script>

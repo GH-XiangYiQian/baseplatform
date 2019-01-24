@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.basics.mapper.UserMapper">
+    <resultMap id="userMapper" type="com.platform.basics.entity.User">
+        <result property="id" column="id"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="userName"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="idCardNo" column="idcardno"/>
+        <result property="birthday" column="birthday"/>
+        <result property="mail" column="mail"/>
+        <result property="addressProvincial" column="address_provincial"/>
+        <result property="addressCity" column="address_city"/>
+        <result property="addressCounty" column="address_county"/>
+        <result property="detailedAddress" column="detailed_address"/>
+        <result property="icon" column="icon"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <sql id="querysql">
+        id
+        ,account
+        ,password
+        ,userName
+        ,sex
+        ,age
+        ,idcradno
+        ,mail
+        ,address_provincial
+        ,address_city
+        ,address_county
+        ,detailed_address
+        ,icon
+        ,gmt_create
+        ,gmt_modified
+    </sql>
+
+    <sql id="conditionsql">
+        <if test="account != null and account != ''">
+            AND account = #{account}
+        </if>
+        <if test="password != null and password != ''">
+            AND password = #{password}
+        </if>
+        <if test="userName != null and userName != ''">
+            AND  userName = #{userName}
+        </if>
+        <if test="sex != null">
+            AND sex = #{sex}
+        </if>
+        <if test="age != 0">
+            AND age = #{age}
+        </if>
+        <if test="idCardNo != null and idCardNo !=''">
+            AND idcardno = #{idCardNo}
+        </if>
+        <if test="birthday != null">
+            AND birthday = #{birthday}
+        </if>
+        <if test="mail != null and mail != ''">
+            AND mail = #{mail}
+        </if>
+        <if test="addressProvincial != null and addressProvincial != ''">
+            AND address_provincial = #{addressProvincial}
+        </if>
+        <if test="addressCity != null and addressCity !=''">
+            AND address_city = #{addressCity}
+        </if>
+        <if test="addressCounty != null and addressCounty !=''">
+            AND address_county = #{addressCounty}
+        </if>
+        <if test="detailedAddress != null and detailedAddress !=''">
+            AND detailed_address = #{detailedAddress}
+        </if>
+    </sql>
+
+    <sql id="vaguesql">
+        <if test="account != null and account != ''">
+            AND account LIKE '%'#{account}'%'
+        </if>
+        <if test="password != null and password != ''">
+            AND password LIKE '%'#{password}'%'
+        </if>
+        <if test="userName != null and userName != ''">
+            AND  userName LIKE '%'#{userName}'%'
+        </if>
+        <if test="sex != null">
+            AND sex LIKE '%'#{sex}'%'
+        </if>
+        <if test="age != 0">
+            AND age LIKE '%'#{age}'%'
+        </if>
+        <if test="idCardNo != null and idCardNo !=''">
+            AND idcardno LIKE '%'#{idCardNo}'%'
+        </if>
+        <if test="birthday != null">
+            AND birthday LIKE '%'#{birthday}'%'
+        </if>
+        <if test="mail != null and mail != ''">
+            AND mail LIKE '%'#{mail}'%'
+        </if>
+        <if test="addressProvincial != null and addressProvincial != ''">
+            AND address_provincial LIKE '%'#{addressProvincial}'%'
+        </if>
+        <if test="addressCity != null and addressCity !=''">
+            AND address_city LIKE '%'#{addressCity}'%'
+        </if>
+        <if test="addressCounty != null and addressCounty !=''">
+            AND address_county LIKE '%'#{addressCounty}'%'
+        </if>
+        <if test="detailedAddress != null and detailedAddress !=''">
+            AND detailed_address LIKE '%'#{detailedAddress}'%'
+        </if>
+    </sql>
+    
+    <select id="userList">
+        SELECT
+          <include refid="querysql"/>
+        FROM
+          sys_user
+        <where>
+            <include refid="vaguesql"/>
+        </where>
+    </select>
+
+</mapper>

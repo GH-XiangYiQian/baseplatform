@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.basics.mapper.basemapper.SysRoleMapper">
+	<resultMap id="BaseResultMap" type="com.platform.basics.entity.SysRole">
+    <!--
+      WARNING - @mbg.generated
+    -->
+	    <id column="id" jdbcType="INTEGER" property="id" />
+	    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+	    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+	    <result column="remark" jdbcType="VARCHAR" property="remark" />
+	    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+	    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  	</resultMap>
+  	<sql id="columns">
+  		A.id
+		,A.role_code
+		,A.role_name
+		,A.remark
+		,A.gmt_create
+		,A.gmt_modified
+  	</sql>
+  	<select id="findSysRoleByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		SELECT
+  			<include refid="columns"/>
+  		FROM
+  			sys_user_role B
+  		LEFT JOIN
+  			sys_role A
+  		ON
+  			B.role_id = A.id
+  		<where>
+  			<if test="userId != null and userId !=''">
+  				B.user_id = #{userId}
+  			</if>
+  		</where>
+  	</select>
+</mapper>

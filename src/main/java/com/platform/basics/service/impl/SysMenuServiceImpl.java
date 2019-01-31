@@ -10,6 +10,7 @@ import com.platform.basics.entity.SysMenu;
 import com.platform.basics.entity.SysRole;
 import com.platform.basics.mapper.basemapper.SysMenuMapper;
 import com.platform.basics.service.SysMenuService;
+import com.platform.basics.util.PageData;
 import com.platform.basics.vo.MenuVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class SysMenuServiceImpl implements SysMenuService{
 	
 	@Autowired
 	private SysMenuMapper sysMenuMapper; 
+	
 	/**
 	 * 根据角色信息获取菜单信息
 	 * @author 	XiangYiQian
@@ -67,8 +69,18 @@ public class SysMenuServiceImpl implements SysMenuService{
 	}
 
 	@Override
-	public List<SysMenu> findSysMenu(SysMenu menu) {
+	public List<SysMenu> findSysMenu(SysMenu menu, PageData pageData) {
+		//PageHelper.startPage(pageData.getPage(), pageData.getLimit());
+		return sysMenuMapper.findSysMenu(menu);
+	}
+
+	@Override
+	public List<SysMenu> selectSysMenu(SysMenu menu, PageData pageData) {
 		return sysMenuMapper.select(menu);
 	}
 
+	@Override
+	public void insertSysMenu(SysMenu menu) {
+		sysMenuMapper.insert(menu);
+	}
 }

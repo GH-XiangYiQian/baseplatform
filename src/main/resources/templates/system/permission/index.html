@@ -1,47 +1,22 @@
 <div class="layui-fluid">
-	<div class="layui-row" style="overflow-y:hidden">
-		<div class="layui-card">
-			<div class="layui-card-header">权限管理</div>
-			<div class="layui-card-body">
-				<div class="layui-card-header">
-					<a id="add" shiro:hasAnyPermissions="admin,permission:all,permission:add" class="layui-btn layui-btn-xs">
-                        <i class="layui-icon"></i>
-                        <span>新增</span>
-                    </a>
-                    <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
-                        <i class="layui-icon">&#xe615;</i>
-                    </a>
+	<div class="layui-row">
+		<div class="layui-col-xs12">
+			<div class="layui-card">
+				<div class="layui-card-header">权限管理</div>
+				<div class="layui-card-body">
+					<div class="layui-card-header">
+						<a id="add" shiro:hasAnyPermissions="admin,permission:all,permission:add" class="layui-btn layui-btn-xs">
+	                        <i class="layui-icon"></i>
+	                        <span>新增</span>
+	                    </a>
+	                    <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+	                        <i class="layui-icon">&#xe615;</i>
+	                    </a>
+					</div>
+					<table class="layui-table" id="permission_table" lay-filter="tools"></table>
 				</div>
-				<table class="layui-table" id="permission_table" lay-filter="tools"></table>
 			</div>
 		</div>
-	</div>
-	<div style="display: none;" id="edit_permission">
-		<div style="margin:20px;font-weight: 300;">
-	    	<form class="layui-form layui-form-pane" action="">
-	        	<div class="layui-form-item">
-	           		<label class="layui-form-label">权限名称</label>
-	            	<div class="layui-input-block">
-	                	<input name="perms" lay-verify="required" placeholder="请输入权限名，权限名不可重复" autocomplete="off" class="layui-input" type="text">
-	            	</div>
-	        	</div>
-	        	<div class="layui-form-item">
-	            	<label class="layui-form-label">上级类目</label>
-	            	<div class="layui-input-block" id="parent_menu">
-	                	<select id="parent_menu" name="pid" lay-verify="" lay-search>
-	                    	<option value="0">无</option>
-	                    	<option th:each="p:${data}" th:value="${p.id}">[[${p.remark}]]</option>
-	                	</select>
-	            	</div>
-	        	</div>
-	        	<div class="layui-form-item layui-form-text">
-	            	<label class="layui-form-label">权限说明</label>
-	            	<div class="layui-input-block">
-	                	<textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
-	            	</div>
-	        	</div>
-	    	</form>
-    	</div>
 	</div>
 </div>
 <script type="text/html" id="operation">
@@ -53,7 +28,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">权限编号</label>
             <div class=layui-input-lump>
-                <input type="text" name="id" placeholder="请输入权限编号.." autocomplete="off" class="layui-input">
+                <input type="text" name="id" oninput="value=numberValue(value)" placeholder="请输入权限编号.." autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -77,6 +52,34 @@
     </form>
 </script>
 
+<script type="text/html" id="edit_permission">
+	<div style="margin:20px;font-weight: 300;">
+		<form class="layui-form layui-form-pane" action="">
+			<div class="layui-form-item">
+   				<label class="layui-form-label">权限名称</label>
+    			<div class="layui-input-block">
+        			<input name="perms" lay-verify="required" placeholder="请输入权限名，权限名不可重复" autocomplete="off" class="layui-input" type="text">
+    			</div>
+			</div>
+			<div class="layui-form-item">
+    			<label class="layui-form-label">上级类目</label>
+    			<div class="layui-input-block" id="parent_menu">
+        			<select id="parent_menu" name="pid" lay-verify="" lay-search>
+            			<option value="0">无</option>
+            			<option th:each="p:${data}" th:value="${p.id}">[[${p.remark}]]</option>
+        			</select>
+    			</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+    			<label class="layui-form-label">权限说明</label>
+    			<div class="layui-input-block">
+        			<textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+    			</div>
+			</div>
+		</form>
+	</div>
+</script>
+
 <script type="text/javascript">
 	$(function(){
 		layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
@@ -85,6 +88,7 @@
 			var table = layui.table;
 			var form = layui.form;
 			var treeGrid = layui.treeGrid;
+			
 			//  表格渲染
 			treeGrid.render({
 				id:'ID'
@@ -142,22 +146,23 @@
 	        });
 			
 			// 监听新增事件
-			$('#add').on('click',function(){
+			$('#add').on('click',function() {
 				layer.open({
 					type: 1
 					,title: '添加权限'
 					,area: ['500px', '450px']
 					,btnAlign: 'c'
-					,shade: 0
+					,shade: 0.3
 					,maxmin: true
-					,content: $('#edit_permission')
+					,content: $('#edit_permission').html()
 					,btn: ['确认', '取消']
 					,yes: function(){
 						editPermission('/permission/insert',null);
 					}
 				})
+				layui.form.render('select');
 			})
-			//  新增保存权限
+			//  编辑权限
 			function editPermission(request_url,id) {
 				var name = $('input[name="perms"]').val();
 				var pid = $('select[name="pid"]').val();
@@ -233,9 +238,9 @@
 						,title: '修改权限'
 						,area: ['500px', '450px']
 						,btnAlign: 'c'
-						,shade: 0
+						,shade: 0.3
 						,maxmin: true
-						,content: $('#edit_permission')
+						,content: $('#edit_permission').html()
 						,btn: ['确认', '取消']
 						,yes: function() {
 							editPermission('/permission/update',data.id);
@@ -246,6 +251,8 @@
 					} else {
 						$('select[name="pid"]').val(data.id);
 					}
+					$('input[name="perms"]').val(data.permission);
+					$('textarea[name="remark"]').val(data.remark);
 					layui.form.render('select');
 				}
 			})

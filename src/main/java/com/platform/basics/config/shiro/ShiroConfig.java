@@ -61,7 +61,7 @@ public class ShiroConfig {
 		//  设置登录路径
 		shiroFilterFactoryBean.setLoginUrl(systemProperties.getShiro().getLoginUrl());
 		//  设置退出路径
-		shiroFilterFactoryBean.setSuccessUrl(systemProperties.getShiro().getSuccessUrl());
+		shiroFilterFactoryBean.setSuccessUrl(systemProperties.getShiro().getLogoutUrl());
 		//  设置未授权路径
 		shiroFilterFactoryBean.setUnauthorizedUrl(systemProperties.getShiro().getUnauthorizedUrl());
 		

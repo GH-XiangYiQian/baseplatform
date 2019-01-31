@@ -48,5 +48,24 @@
 			,B.gmt_create
 			,B.gmt_modified
   		
-  </select>
+  	</select>
+  
+  	<select id="findSysPermission" parameterType="com.platform.basics.entity.SysPermission" resultMap="BaseResultMap">
+  		SELECT
+  			<include refid="columns"/>
+  		FROM
+  			sys_permission
+		<where>
+			<if test="id != null">
+				AND id LIKE CONCAT('%',#{id}'%')
+			</if>
+			<if test="permission != null and permission != ''">
+				AND permission LIKE CONCAT('%',#{permission},'%')
+			</if>
+			<if test="remark != null and remark !=''">
+				AND　remark LIKE CONCAT('%',#{remark},'%')
+			</if>
+		</where>  	
+		ORDER BY pid	
+  	</select>
 </mapper>

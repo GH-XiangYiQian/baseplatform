@@ -27,13 +27,22 @@ public interface SysPermissionService {
 	Set<SysPermission> selectSysPermissionByRoles(List<SysRole> roles);
 	
 	/**
-	 * .查询权限信息
+	 * .查询权限信息(模糊查询)
 	 * @author 	XiangYiQian
 	 * @param 	sysPermission
 	 * @date	2019-1-16 08:51:13
 	 * @return
 	 */
 	List<SysPermission> findSysPermission(SysPermission sysPermission, PageData pageData);
+	
+	/**
+	 * .查询权限信息(精确查询)
+	 * @author 	XiangYiQian
+	 * @param 	sysPermission
+	 * @date	2019-1-16 08:51:13
+	 * @return
+	 */
+	List<SysPermission> selectSysPermission(SysPermission sysPermission, PageData pageData);
 	
 	/**
 	 * .依据id删除权限信息 

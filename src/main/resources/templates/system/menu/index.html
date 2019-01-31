@@ -1,0 +1,296 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">菜单管理</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a id="add" shiro:hasAnyPermissions="admin,menu:all,menu:add" class="layui-btn layui-btn-xs">
+                            <i class="layui-icon"></i>
+                            <span>新增</span>
+                        </a>
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                        	<i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="menu_table" lay-filter="tools"></table>
+                    <script type="text/html" id="operation">
+                        <button shiro:hasAnyPermissions="admin,menu:all,menu:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,menu:all,menu:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+	<form class="layui-form" action="">
+		<div class="layui-form-item">
+			<label class="layui-form-label">菜单编号</label>
+			<div class=layui-input-lump>
+				<input type="text" name="id" oninput="value=numberValue(value)" placeholder="请输入菜单标号" autocomplete="off" class="layui-input"/>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">菜单名称</label>
+			<div class="layui-input-lump">
+				<input type="text" name="name" placeholder="请输入菜单名称" autocomplete="off" class="layui-input"/>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-lump">
+				<button class="layui-btn" lay-submit lay-filter="formDome_hash">搜索</button>
+				<button class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+</script>
+
+<script type="text/html" id="edit_menu">
+	<div style="padding: 10px; margin:20px; line-height: 15px; font-weight: 300;">
+            <form class="layui-form layui-form-pane" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单图标</label>
+                    <div class="layui-input-block">
+                        <input type="text" value="layui-icon-tree" name="ico" id="iconPicker" lay-filter="iconPicker" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单名称</label>
+                    <div class="layui-input-block">
+                        <input name="name" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">上级类目</label>
+                    <div class="layui-input-block">
+                        <select name="pid" lay-filter="top" lay-verify="" lay-search>
+                            <option value="0">无</option>
+                            <option th:each="m:${topMenus}" th:value="${m.id}">[[${m.name}]]</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="action" class="layui-form-item" style="display: none">
+                    <label class="layui-form-label">链接地址</label>
+                    <div class="layui-input-block">
+                        <input name="url" lay-verify="required" placeholder="外链需加上协议，如：https://" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单排序</label>
+                    <div class="layui-input-block">
+                        <input name="soft" lay-verify="required" placeholder="请输入序号，序号不可重复，越小越靠前" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display: none" id="out_link">
+                    <label class="layui-form-label">是否外链</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="iframe" value="true" title="是">
+                        <input type="radio" name="iframe" value="false" title="否" checked>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择角色</label>
+                    <div class="layui-input-block layui-input-treeselect" >
+                        <input type="text" name="role" id="treeselect1" required lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </form>
+        </div>
+</script>
+
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+		layui.use(["jquery","sidebar","form","treeGrid"],function() {
+			var layer = layui.layer;
+			var sidebar = layui.sidebar;
+			var form = layui.form;
+			var table = layui.table;
+			var treeGrid = layui.treeGrid;
+			
+			//  渲染表格
+			treeGrid.render({
+				id: 'ID'
+				,elem: '#menu_table'
+				,idField: 'id'
+				,url: '/menu/querymenu'
+				,treeId: 'id'
+				,treeUpId: 'pid' //父级菜单
+				,treeShowName: 'name' //  树节点显示的字段名称
+				,height:'full-140'
+				,isFilter: false
+				,iconOpen: false //是否显示图标【默认显示】
+				,isOpenDefault: true//节点默认是展开还是折叠【默认展开】
+				,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,page: false
+				,cols: [
+					[
+						{field:'id', align:'center', width:70, title:'编号'}
+						,{field:'name', title:'菜单名称'}
+						,{field:'icon', title:'菜单图标', align:'center', width:100}
+						,{field:'url',title:'链接地址'}
+						,{field:'levelNumber', title:'子菜单数量', align:'center', width:120}
+						,{field:'soft', title:'排序', align:'center', width:90}
+						,{field:'gmtCreate',title:'创建时间', width:150}
+						,{field:'gmtModified', title:'修改时间', width:150}
+						,{field:'operation',align:'center', width:140, toolbar: '#operation', title: '操作'}
+					]
+				]
+				,done:function(res, curr, count) {    //res 接口返回的信息
+	                $("td[data-field$='icon']").children().each(function () {
+	                    $(this).html("<i class=\"layui-icon "+$(this).text()+"\"></i>");
+	                });
+	                $("td[data-field$='soft']").children().each(function () {
+	                    $(this).html("<span class=\"layui-badge layui-bg-cyan\">"+$(this).text()+"</span>");
+	                });
+	            }
+			})
+			//  搜索事件
+			$('#search_hash').on('click',function() {
+				var that = this;
+				sidebar.render({
+					elem: that
+					,content: $('#search_tpl_hash').html()
+					,title: '搜索'
+					,shade: true 
+					,width: '450px'
+					,done :function() {
+						form.render();
+						form.on('submit(formDome_hash)', function(data) {
+							treeGrid.query('ID',{
+								where: {
+									id:$('input[name=id]').val(),
+									name:$('input[name=name]').val()
+								},
+								page: {
+									curr:1 //  从第一页开始
+								}
+							});
+							return false;
+						})
+					}
+				})
+			})
+			
+			// 监听新增事件
+			$('#add').on('click',function() {
+				var index = layer.open({
+					type: 2
+					,content: '/menu/insertPage'
+					,title: '添加菜单'
+					,area: ['500px', '450px']
+					,btnAlign: 'c'
+					,shade: 0.3
+					,maxmin: true
+					,btn: ['确认', '取消']
+					,yes: function(){
+						 var body = layer.getChildFrame('body', index);
+		                 add(layer,body);
+					}
+				})
+				layui.form.render('select');
+				parent.layer.iframeAuto(index);
+			})
+		})
+	})
+	
+	
+	 /**
+     * 新增菜单
+     * @param layer
+     * @param body
+     */
+    function add(layer,body) {
+        var ico = body.contents().find("input[name=\"ico\"]").val();
+        var name = body.contents().find("input[name=\"name\"]").val();
+        var pid = body.contents().find("select[name=\"pid\"]").val();
+        var url = body.contents().find("input[name=\"url\"]").val();
+        var iframe = body.contents().find("input[name=\"iframe\"]:checked").val()
+        if(pid == 0){
+            url = "";
+        }
+        var soft = body.contents().find("input[name=\"soft\"]").val();
+        if(name == ''||null == name){
+            layui.layer.msg("菜单名称不能为空",{icon: 5});
+            return
+        }
+        if(soft == ''||null == soft){
+            layui.layer.msg("排序序号不能为空",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/menu/insert",
+            contentType: "application/json",
+            type: "POST",
+            data:JSON.stringify({
+                name:name,
+                ico:ico,
+                pid:pid,
+                url:url,
+                iframe:iframe,
+                soft:soft
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("添加成功", {icon: 6});
+                        setTimeout(function () {
+                            location.reload(true)
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+
+	
+	function initEditMenu() {
+		var str = "add";
+		console.log(str);
+		layui.config({
+			base: '../plugins/lay/modules/'
+		}).extend({
+			iconPicker: 'iconPicker'
+		}).use(['iconPicker'], function() {
+			var iconPicker = layui.iconPicker;
+			iconPicker,render({
+				//选择器使用input
+				elem: '#iconPicker',
+				//  数据类型： fontClass/unicode, 推荐使用fontClass
+				type: 'fontClass',
+				//  是否开启搜索： true/false
+				search: true,
+				//是否开启分页
+				page: true,
+				//  点击回调
+				click:function(data) {
+					console.log(data);
+				}
+			});
+			
+		    /**
+			 *  .选中图标（常用于跟新时默认选中图片）
+			 *  @param filter lay-filter
+			 *  @param	iconName 图标名称,自动识别fontClass/unicode
+			 */
+			iconPicker.checkIcon('iconPicker',$('#iconPicker').val());
+		})
+		/* layui.config({
+			base: '/plugins/lay/layui-treesekect.src/js/'  //自定义组件的目录  相对路径
+		}).use(['form', 'treesekect'], function() {
+			var form = layui.form;
+			var treeselect = layui,treesekect;
+			var data = [];
+			$.ajax({
+				
+			})
+		}) */		
+	}
+</script>

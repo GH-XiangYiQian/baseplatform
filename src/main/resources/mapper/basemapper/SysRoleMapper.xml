@@ -35,4 +35,17 @@
   			</if>
   		</where>
   	</select>
+  	
+  	<select id="findSysRoleResultMap" parameterType="com.platform.basics.entity.SysRole" resultType="java.util.HashMap">
+  		SELECT
+  			id
+  			,role_name as 'name'
+  		FROM
+  			sys_role
+  		<where>
+  			<if test="roleName != null and roleName != ''">
+  				AND	role_name LIKE CONCAT('%',roleName,'%')
+  			</if>
+  		</where>
+  	</select>
 </mapper>

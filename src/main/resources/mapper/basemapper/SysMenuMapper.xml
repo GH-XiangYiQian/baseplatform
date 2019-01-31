@@ -80,4 +80,23 @@
   			pid = 0
   	</select>
   	
+  	<select id="findSysMenu" parameterType="com.platform.basics.entity.SysMenu" resultMap="BaseResultMap">
+  		SELECT
+  			<include refid="columns"/>
+  		FROM
+  			sys_menu
+  		<where>
+  			<if test="id != null">
+  				AND	id LIKE CONCAT('%',#{id},'%')
+  			</if>
+  			<if test="pid != null">
+  				AND	pid LIKE CONCAT('%',#{pid},'%')
+  			</if>
+  			<if test="name != null and name != ''">
+  				AND	name LIKE CONCAT('%',#{name},'%')
+  			</if>
+  		</where>
+  		ORDER BY soft
+  	</select>
+  	
 </mapper>

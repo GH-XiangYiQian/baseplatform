@@ -1,6 +1,7 @@
 package com.platform.basics.mapper.basemapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -22,4 +23,12 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 	 * @return	List<SysRole>
 	 */
 	List<SysRole> findSysRoleByUserId(@Param("userId")Integer userId);
+	
+	/**
+	 * .获取角色信息id，name
+	 * @author 	XiangYiQian
+	 * @param role
+	 * @return List<Map<String, Object>> 
+	 */
+	List<Map<String, Object>> findSysRoleResultMap(SysRole role);
 }

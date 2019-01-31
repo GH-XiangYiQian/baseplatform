@@ -7,6 +7,7 @@ package com.platform.basics.service;
  */
 
 import java.util.List;
+import java.util.Map;
 
 import com.platform.basics.entity.SysRole;
 
@@ -21,5 +22,20 @@ public interface SysRoleService {
 	 * @return	List<SysRole>
 	 */
 	List<SysRole> findSysRoleByUserId(Integer userId);
-
+	
+	/**
+	 * .获取用户角色信息
+	 * @author 	XiangYiQian
+	 * @date	2019-1-30 11:36:52
+	 * @return	List<SysRole>
+	 */
+	List<SysRole> findSysRole(SysRole role);
+	
+	/**
+	 * .获取用户角色信息
+	 * @author 	XiangYiQian
+	 * @date	2019-1-30 11:36:52
+	 * @return	List<Map<String,Object>>
+	 */
+	List<Map<String,Object>> findSysRoleResultMap(SysRole role);
 }

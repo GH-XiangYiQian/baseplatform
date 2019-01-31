@@ -88,7 +88,6 @@
 				_validateCode = resp.validateCode;
 			},
 		})
-		
 		var form = layui.form;
 		form.verify({
 			account: function(value){
@@ -148,19 +147,19 @@
                 layer.msg('正在登录...');
             },
             success:function(result) {
-            	 layer.close(load);
-            	 if (result.code == 200) {
-            		 layer.msg('登录成功');
-                     setTimeout(function(){
-                         //登录返回
-                         window.location.href = "/index";
-                     },1000)
-            	 } else {
-                     $('#password').val('');
-            		 layer.msg(result.msg);
-            		 validateCode();
-            		 return;
-                 }
+            	layer.close(load);
+            	if (result.code == 200) {
+            		layer.msg('登录成功');
+                    setTimeout(function(){
+                    	//登录返回
+                        window.location.href = "/index";
+                    },1000)
+            	} else {
+                    $('#password').val('');
+            		layer.msg(result.msg);
+            		validateCode();
+            		return;
+             	}
             },
             error:function(e) {
                 var msg = e.msg;

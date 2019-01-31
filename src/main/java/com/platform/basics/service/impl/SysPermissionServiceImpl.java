@@ -26,7 +26,7 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	@Override
 	public List<SysPermission> findSysPermission(SysPermission sysPermission, PageData pageData) {
 		//PageHelper.startPage(pageData.getPage(), pageData.getLimit());
-		return sysPermissionMapper.select(sysPermission);
+		return sysPermissionMapper.findSysPermission(sysPermission);
 	}
 
 	@Override
@@ -42,6 +42,11 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	@Override
 	public int insertSysPermission(SysPermission sysPermission)throws Exception {
 		return sysPermissionMapper.insert(sysPermission);
+	}
+
+	@Override
+	public List<SysPermission> selectSysPermission(SysPermission sysPermission, PageData pageData) {
+		return sysPermissionMapper.select(sysPermission);
 	}
 
 }

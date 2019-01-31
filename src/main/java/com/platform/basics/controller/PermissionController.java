@@ -36,7 +36,7 @@ public class PermissionController {
 	public ModelAndView index() {
 		SysPermission sysPermission = new SysPermission();
 		sysPermission.setPid(0);
-		List<SysPermission> list = sysPermissionService.findSysPermission(sysPermission, null);
+		List<SysPermission> list = sysPermissionService.selectSysPermission(sysPermission, null);
 		HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
 		request.setAttribute("data", list);
 		return new ModelAndView("/system/permission/index");
@@ -48,6 +48,7 @@ public class PermissionController {
 	 * @date	2019-1-15 17:42:06
 	 * @return	ResponseEntity
 	 */
+	@OperationLog("查看权限信息")
 	@RequiresPermissions(value = {"admin", "permission:all", "permission:select"}, logical= Logical.OR)
 	@RequestMapping(value = "/findpermission")
 	public ResponseEntity<List<SysPermission>> findSysPermission(SysPermission sysPermission, PageData pageData) {

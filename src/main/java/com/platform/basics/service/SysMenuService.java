@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.platform.basics.entity.SysMenu;
 import com.platform.basics.entity.SysRole;
+import com.platform.basics.util.PageData;
 import com.platform.basics.vo.MenuVo;
 /**
  * 菜单信息操作相关接口
@@ -13,13 +14,22 @@ import com.platform.basics.vo.MenuVo;
 public interface SysMenuService {
 	
 	/**
-	 * .查询菜单信息
+	 * .查询菜单信息 (模糊查询)
 	 * @author 	XiangYiQian
 	 * @param	menu
 	 * @date	2019-1-22 14:41:27
 	 * @return 	List<SysMenu>
 	 */
-	List<SysMenu> findSysMenu(SysMenu menu);
+	List<SysMenu> findSysMenu(SysMenu menu, PageData pageData);
+	
+	/**
+	 * .查询菜单信息 (精确查询)
+	 * @author 	XiangYiQian
+	 * @param	menu
+	 * @date	2019-1-22 14:41:27
+	 * @return 	List<SysMenu>
+	 */
+	List<SysMenu> selectSysMenu(SysMenu menu, PageData pageData);
 	
 	/**
 	 * 根据角色信息获取菜单信息
@@ -49,8 +59,12 @@ public interface SysMenuService {
 	List<SysMenu> findParentMenu();
 	
 	/**
-	 * .
-	 * 
+	 * .新增菜单
+	 * @author 	XiangYiQian
+	 * @param	menu
+	 * @date	2019-1-31 09:55:47
+	 * @return	void
 	 */
+	void insertSysMenu(SysMenu menu);
 
 }

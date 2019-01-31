@@ -25,4 +25,12 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
 	 * @return	List<Menu> 
 	 */
 	List<SysMenu> findParentMenu();
+	
+	/**
+	 * .查询菜单信息
+	 * @author 	XiangYiQian
+	 * @param 	sysmenu
+	 * @return
+	 */
+	List<SysMenu> findSysMenu(SysMenu sysmenu);
 }

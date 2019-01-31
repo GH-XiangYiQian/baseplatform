@@ -17,4 +17,12 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 	 * @return	List<SysPermission>
 	 */
 	Set<SysPermission> selectSysPermissionByRoles(List<SysRole> roles);
+	
+	/**
+	 * .查询权限信息
+	 * @author 	XiangYiQian
+	 * @param 	permission
+	 * @return
+	 */
+	List<SysPermission> findSysPermission(SysPermission permission);
 }

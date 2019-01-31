@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>基础开发平台</title>
 <link rel="stylesheet" th:href="@{'/css/github_activity_widget.css'}">
@@ -107,15 +107,16 @@
   	<script th:src="@{'/plugins/kitadmin.js'}"></script>
   	<script th:src="@{'/plugins/mockjs-config.js'}"></script>
   	<script th:src="@{'/js/baseplatform.js'}"></script>
+  	<script th:src="@{'/js/util.js'}"></script>
 <script>
       /**
-       * 读取缓存中的主题配置
+       * .读取缓存中的主题配置
        * @type {string}
        */
       var themeKey = 'KITADMIN_SETTING_THEME';
       var theme = localStorage.getItem(themeKey);
       if(theme != null){
-          var themeName = $.parseJSON(theme).theme;
+                                                                                                                                                                                                                                                var themeName = $.parseJSON(theme).theme;
           var str = $('#theme').attr('href');
           var _themeUrl = str.substr(0, str.lastIndexOf('/') + 1);
           $('#theme').attr('href', _themeUrl + themeName + '.css');

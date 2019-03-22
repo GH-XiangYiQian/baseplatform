@@ -191,6 +191,50 @@
 				layui.form.render('select');
 				parent.layer.iframeAuto(index);
 			})
+			
+			// 监听修改
+			treeGrid.on('tool(tools)',function(obj) {
+				var data = obj.data;
+				// 编辑
+				if (obj.event == "edit") {
+					var index = layer.open({
+						type: 2
+						,content: '/menu/updatePage?id='+data.id
+						,area: ['550px', '520px']
+						,btnAlign: 'c'
+						,shade: 0.5
+						,title: '更新菜单'
+						,maxmin: true
+						,btn: ['确认', '取消']
+						,yes: function() {
+							var body = layer.getChildFrame('body', index);
+							update(layer, body);
+						}
+					})
+					parent,layer.iframeAuto(index);
+				} else if (obj.event == "del") {
+					layer.confirm("您确定要删除数据吗?如果存在下级节点则一并删除,此操作不能撤销!",{icon:3, btnAlign: 'c', title: '提示'},
+							function(index) {
+								$.ajax({
+									url:'/menu/delete?id='+data.id
+									,type:'DELETE'
+									,success: function(data) {
+										if (data.code == 200) {
+											layer.close(index);
+											layui.layer.msg("删除成功",{icon:6});
+											setTimeout(function() {
+												location.reload(true);
+											},100);
+										} else {
+											layer.close(index);
+											layer.msg(data.msg,{icon:5});
+										}
+									}
+								})
+					})
+				}
+				
+			})
 		})
 	})
 	
@@ -210,6 +254,61 @@
             url = "";
         }
         var soft = body.contents().find("input[name=\"soft\"]").val();
+        if (name == ''||null == name) {
+            layui.layer.msg("菜单名称不能为空",{icon: 5});
+            return
+        } 
+        if (soft == ''||null == soft) {
+            layui.layer.msg("排序序号不能为空",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/menu/insert",
+            type: "POST",
+            data:{
+                name:name,
+                icon:ico,
+                pid:pid,
+                url:url,
+                iframe:iframe,
+                soft:soft
+            },
+            dataType: "json",
+            success: function(data) {
+                if(data.code==200) {
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function () {
+                        layer.closeAll();
+                        layui.layer.msg("添加成功", {icon: 6});
+                        setTimeout(function () {
+                            location.reload(true)
+                        },100)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+	
+	/**
+     * 更新用户
+     * @param layer
+     * @param body
+     */
+    function update(layer,body) {
+        var id = body.contents().find("input[name=\"id\"]").val();
+        var ico = body.contents().find("input[name=\"ico\"]").val();
+        var name = body.contents().find("input[name=\"name\"]").val();
+        var pid = body.contents().find("select[name=\"pid\"]").val();
+        var url = body.contents().find("input[name=\"url\"]").val();
+        var iframe = body.contents().find("input[name=\"iframe\"]:checked").val()
+        if(pid == 0){
+            url = "";
+        }
+        var soft = body.contents().find("input[name=\"soft\"]").val();
         if(name == ''||null == name){
             layui.layer.msg("菜单名称不能为空",{icon: 5});
             return
@@ -218,25 +317,26 @@
             layui.layer.msg("排序序号不能为空",{icon: 5});
             return
         }
-        $.ajax({
-            url: "/menu/insert",
-            contentType: "application/json",
-            type: "POST",
+         $.ajax({
+            url: '/menu/update',
+            contentType: 'application/json',
+            type: 'POST',
             data:JSON.stringify({
+                id:id,
                 name:name,
-                ico:ico,
+                icon:ico,
                 pid:pid,
                 url:url,
                 iframe:iframe,
                 soft:soft
             }),
-            dataType: "json",
+            dataType: 'json',
             success: function(data){
                 if(data.code==200){
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        layui.layer.msg("添加成功", {icon: 6});
+                        layui.layer.msg("修改成功", {icon: 6});
                         setTimeout(function () {
                             location.reload(true)
                         },1000)
@@ -247,9 +347,8 @@
                     });
                 }
             }
-        });
+        }); 
     }
-
 	
 	function initEditMenu() {
 		var str = "add";

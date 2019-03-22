@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement(proxyTargetClass = true)// 启注解事务管理，等同于xml配置方式的
 @SpringBootApplication
-public class BaseplatformApplication extends SpringBootServletInitializer{
+public class BaseplatformApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BaseplatformApplication.class, args);

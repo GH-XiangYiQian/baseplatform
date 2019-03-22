@@ -99,4 +99,19 @@
   		ORDER BY soft
   	</select>
   	
+  	<update id="updateMenuLevelNumber" parameterType="com.platform.basics.entity.SysMenu">
+  		UPDATE
+  			sys_menu
+  		SET
+  			level_number = level_number + #{levelNumber}
+  		WHERE
+  			id = #{id}
+  	</update>
+  	
+  	<delete id="deleteSysMenuByPid" parameterType="java.lang.Integer">
+  		DELETE FROM	
+  			sys_menu
+  		WHERE
+  			pid = #{pid}
+  	</delete>
 </mapper>

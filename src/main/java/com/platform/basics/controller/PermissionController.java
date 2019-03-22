@@ -3,7 +3,6 @@ package com.platform.basics.controller;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.Logical;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.platform.basics.annotation.OperationLog;
 import com.platform.basics.entity.SysPermission;
 import com.platform.basics.service.SysPermissionService;
-import com.platform.basics.util.HttpContextUtils;
 import com.platform.basics.util.PageData;
 import com.platform.basics.util.ResponseEntity;
 
@@ -34,11 +32,6 @@ public class PermissionController {
 	@OperationLog("查看菜单信息")
 	@RequestMapping(value = "/index")
 	public ModelAndView index() {
-		SysPermission sysPermission = new SysPermission();
-		sysPermission.setPid(0);
-		List<SysPermission> list = sysPermissionService.selectSysPermission(sysPermission, null);
-		HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-		request.setAttribute("data", list);
 		return new ModelAndView("/system/permission/index");
 	}
 	
@@ -68,12 +61,26 @@ public class PermissionController {
 	@RequiresPermissions(value = {"admin", "permission:all", "permission:delete"}, logical= Logical.OR)
 	@RequestMapping(value = "/delete")
 	public ResponseEntity<Object> deleteSysPermission(Integer id) {
-		int record = sysPermissionService.deleteSysPermissionById(id);
-		if (record > 0) {
-			return new ResponseEntity<>();
-		} else {
-			return new ResponseEntity<>().error("删除失败!");
-		}
+		sysPermissionService.deleteSysPermissionById(id);
+		return new ResponseEntity<>();
+	}
+	
+	/**
+	 * .添加权限页面
+	 * @author 	XiangYiQian
+	 * @date	2019-2-18 17:19:25
+	 * @return	ModelAndView
+	 */
+	@OperationLog("添加权限页面")
+	@RequiresPermissions(value = {"admin", "permission:all", "permission:add"})
+	@RequestMapping(value = "/insertPage")
+	public ModelAndView toAddPage() {
+		SysPermission v_SysPermission = new SysPermission();
+		v_SysPermission.setPid(0);
+		List<SysPermission> list = sysPermissionService.selectSysPermission(v_SysPermission, null);
+		ModelAndView mav = new ModelAndView("/system/permission/add");
+		mav.addObject("topPermissions", list);
+		return mav;
 	}
 	
 	/**
@@ -87,7 +94,7 @@ public class PermissionController {
 	@OperationLog("新增权限")
 	@RequiresPermissions(value = {"admin", "permission:all", "permission:add"}, logical= Logical.OR)
 	@RequestMapping(value = "/insert")
-	public ResponseEntity<Object> insertSysPermission(@Valid SysPermission sysPermission) throws Exception {
+	public ResponseEntity<Object> insertSysPermission(@Valid SysPermission sysPermission) {
 		sysPermission.setGmtCreate(new Date());
 		sysPermission.setGmtModified(new Date());
 		int record = sysPermissionService.insertSysPermission(sysPermission);
@@ -96,6 +103,26 @@ public class PermissionController {
 		} else {
 			return new ResponseEntity<>().error("新增失败!");
 		}
+	}
+	
+	/**
+	 * .修改权限页面
+	 * @author 	XiangYiQian
+	 * @date	2019-2-18 11:03:55
+	 * @return	ModelAndView
+	 */
+	@OperationLog("修改页面")
+	@RequiresPermissions(value = {"admin", "permission:all", "permission:update"})
+	@RequestMapping(value = "/updatePage")
+	public ModelAndView toUpdatePage(SysPermission sysPermission) {
+		SysPermission v_SysPermission = new SysPermission();
+		v_SysPermission.setPid(0);
+		List<SysPermission> list = sysPermissionService.selectSysPermission(v_SysPermission, null);
+		sysPermission = sysPermissionService.findSysPermissionById(sysPermission.getId());
+		ModelAndView mav = new ModelAndView("/system/permission/update");
+		mav.addObject("data", list);
+		mav.addObject("permission", sysPermission);
+		return mav;
 	}
 	
 	/**
@@ -110,11 +137,7 @@ public class PermissionController {
 	@RequestMapping(value = "/update")
 	public ResponseEntity<Object> updateSysPermission(@Valid SysPermission sysPermission) {
 		sysPermission.setGmtModified(new Date());
-		int record = sysPermissionService.updateSysPermission(sysPermission);
-		if (record > 0) {
-			return new ResponseEntity<>("修改成功");
-		} else {
-			return new ResponseEntity<>().error("修改失败!");
-		}
+		sysPermissionService.updateSysPermission(sysPermission);
+		return new ResponseEntity<>("修改成功");
 	}
 }

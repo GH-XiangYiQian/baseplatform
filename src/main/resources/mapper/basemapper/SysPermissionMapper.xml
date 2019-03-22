@@ -68,4 +68,11 @@
 		</where>  	
 		ORDER BY pid	
   	</select>
+  	
+  	<delete id="deleteSysPermissionByPid" parameterType="java.lang.Integer">
+  		DELETE FROM
+  			sys_permission
+  		WHERE
+  			pid = #{pid}
+  	</delete>
 </mapper>

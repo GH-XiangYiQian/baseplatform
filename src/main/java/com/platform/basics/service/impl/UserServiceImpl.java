@@ -1,5 +1,7 @@
 package com.platform.basics.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,26 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User findUserByAccount(String account) {
 		return userMapper.findUserByAccount(account);
+	}
+
+	@Override
+	public List<User> findUser(User user) {
+		try {
+			return userMapper.findUser(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<User> selectUser(User user) {
+		return userMapper.select(user);
+	}
+
+	@Override
+	public void updateUserById(User user) {
+		userMapper.updateUserById(user);
 	}
 
 }

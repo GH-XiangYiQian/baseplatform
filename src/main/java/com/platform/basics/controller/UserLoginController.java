@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import com.platform.basics.entity.SysRole;
 import com.platform.basics.entity.User;
 import com.platform.basics.service.SysMenuService;
 import com.platform.basics.service.SysRoleService;
+import com.platform.basics.service.UserService;
 import com.platform.basics.util.Base64Utils;
 import com.platform.basics.util.HttpContextUtils;
 import com.platform.basics.util.ResponseEntity;
@@ -50,6 +52,9 @@ public class UserLoginController {
 	
 	@Autowired
 	private SysMenuService sysMenuService;
+	
+	@Autowired
+	private UserService userService; 
 	/**
 	 * 验证码
 	 * @author	XiangYiQian
@@ -105,9 +110,15 @@ public class UserLoginController {
 		try {
 			subject.login(token);
 			resp = new ResponseEntity<>(null,200,"登陆成功");
-		} catch (AuthenticationException e) {
+			User use = (User) SecurityUtils.getSubject().getPrincipal();
+			User v_User = new User();
+			v_User.setId(use.getId());
+			v_User.setLatelySignInTime(new Date());
+			userService.updateUserById(v_User);
+		} catch (Exception e) {
 			log.error("===========================================>>>>>>用户登陆认证失败：{}",e.getMessage());
 			resp.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return resp;
 	}

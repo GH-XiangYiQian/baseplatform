@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 	 * @date	2019-1-15 11:15:57
 	 */
 	@ExceptionHandler(value = AuthorizationException.class)
-	public ModelAndView handleAuthorizationException() {
+	public ModelAndView handleAuthorizationException(AuthorizationException e) {
 		log.error("没有权限访问");
 		return new ModelAndView(systemProperties.getShiro().getUnauthorizedUrl());
 	}

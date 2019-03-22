@@ -52,42 +52,15 @@
     </form>
 </script>
 
-<script type="text/html" id="edit_permission">
-	<div style="margin:20px;font-weight: 300;">
-		<form class="layui-form layui-form-pane" action="">
-			<div class="layui-form-item">
-   				<label class="layui-form-label">权限名称</label>
-    			<div class="layui-input-block">
-        			<input name="perms" lay-verify="required" placeholder="请输入权限名，权限名不可重复" autocomplete="off" class="layui-input" type="text">
-    			</div>
-			</div>
-			<div class="layui-form-item">
-    			<label class="layui-form-label">上级类目</label>
-    			<div class="layui-input-block" id="parent_menu">
-        			<select id="parent_menu" name="pid" lay-verify="" lay-search>
-            			<option value="0">无</option>
-            			<option th:each="p:${data}" th:value="${p.id}">[[${p.remark}]]</option>
-        			</select>
-    			</div>
-			</div>
-			<div class="layui-form-item layui-form-text">
-    			<label class="layui-form-label">权限说明</label>
-    			<div class="layui-input-block">
-        			<textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
-    			</div>
-			</div>
-		</form>
-	</div>
-</script>
-
 <script type="text/javascript">
+	var treeGrid;
 	$(function(){
 		layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
 			var layer = layui.layer;
 			var sidebar = layui.sidebar;
 			var table = layui.table;
 			var form = layui.form;
-			var treeGrid = layui.treeGrid;
+			treeGrid = layui.treeGrid;
 			
 			//  表格渲染
 			treeGrid.render({
@@ -147,34 +120,36 @@
 			
 			// 监听新增事件
 			$('#add').on('click',function() {
-				layer.open({
-					type: 1
+				var index = layer.open({
+					type: 2
+					,content: '/permission/insertPage'
 					,title: '添加权限'
 					,area: ['500px', '450px']
 					,btnAlign: 'c'
 					,shade: 0.3
 					,maxmin: true
-					,content: $('#edit_permission').html()
 					,btn: ['确认', '取消']
-					,yes: function(){
-						editPermission('/permission/insert',null);
+					,yes: function() {
+						var body = layer.getChildFrame('body', index);
+						insertPermission(layer,body);
 					}
 				})
 				layui.form.render('select');
+				parent.layer.iframeAuto(index);
 			})
-			//  编辑权限
-			function editPermission(request_url,id) {
-				var name = $('input[name="perms"]').val();
-				var pid = $('select[name="pid"]').val();
-				var remark = $('textarea[name="remark"]').val();
+			// 添加权限
+			function insertPermission(layer,body) {
+				var name = body.contents().find('input[name=\"perms\"]').val();
+				var pid = body.contents().find('select[name=\"pid\"]').val();
+				var remark = body.contents().find('textarea[name=\"remark\"]').val();
 				if (name == null || name == "") {
-					layui.layer.msg("请输入菜单名称!", {icon: 5});
+					layui.layer.msg("请输入权限名称!", {icon: 5});
 					return;
 				}
 				$.ajax({
-					url: request_url,
+					url: '/permission/insert',
 					type: 'POST',
-					data: {id:id,permission:name,pid:pid,remark:remark},
+					data: {permission:name,pid:pid,remark:remark},
 					dataType: 'JSON',
 					success:function(result) {
 						if (result.code == 200) {
@@ -198,11 +173,26 @@
 					}
 				})
 			}
-			
-			//监听工具栏的时间
-			treeGrid.on('tool(tools)', function(obj) {
+			// 监听工具栏事件
+			treeGrid.on('tool(tools)', function(obj){
 				var data = obj.data;
-				if (obj.event == "del") {
+				// 监听修改
+				if (obj.event == "edit") {
+					var index = layer.open({
+						 type: 2
+						,content: '/permission/updatePage?id='+data.id
+						,title: '修改权限'
+						,area: ['500px', '450px']
+						,btnAlign: 'c'
+						,shade: 0.3
+						,maxmin: true
+						,btn: ['确认', '取消']
+						,yes: function() {
+							var body = layer.getChildFrame('body', index);
+							updateSysPermission(layer, body);
+						}
+					})
+				} else if (obj.event == "del") {
 					layer.confirm("你确定删除数据吗？如果存在下级节点<br/>则一并删除，此操作不能撤销！", {icon: 3 ,btnAlign: 'c', title:'提示'},
 							function(index) {  //确定回调
 								$.ajax({
@@ -221,7 +211,7 @@
 		                                                curr: 1
 		                                            }
 		                                        });
-		                                    },1000);
+		                                    },100);
 										} else {
 											layui.layer.msg(result.msg, {icon: 5});
 										}
@@ -232,30 +222,51 @@
 							layer.close(index);
 						}
 					)
-				} else if (obj.event == "edit") {
-					layer.open({
-						type: 1
-						,title: '修改权限'
-						,area: ['500px', '450px']
-						,btnAlign: 'c'
-						,shade: 0.3
-						,maxmin: true
-						,content: $('#edit_permission').html()
-						,btn: ['确认', '取消']
-						,yes: function() {
-							editPermission('/permission/update',data.id);
-						}
-					})
-					if (data.pid != 0) {
-						$('select[name="pid"]').val(data.pid);
-					} else {
-						$('select[name="pid"]').val(data.id);
-					}
-					$('input[name="perms"]').val(data.permission);
-					$('textarea[name="remark"]').val(data.remark);
-					layui.form.render('select');
 				}
 			})
+			
 		})
 	})
+	// 修改保存权限信息
+	function updateSysPermission(layer, body) {
+		var id = body.contents().find("input[name=\"id\"]").val();
+		var permission = body.contents().find("input[name=\"perms\"]").val();
+		var pid = body.contents().find("select[name=\"pid\"]").val();
+		var remark = body.contents().find("textarea[name=\"remark\"]").val();
+		if (permission == null || permission == "") {
+			layui.layer.msg("权限名称不能为空",{icon: 5});
+			return false;
+		}
+		if (remark == null || remark == "") {
+			layui.layer.msg("权限备注不能为空", {icon: 5});
+			return false;
+		}
+	//	alert(id+ permission+ pid+remark);
+		$.ajax({
+			url:'/permission/update',
+			type:'POST',
+			data:{id:id,permission:permission,pid:pid,remark:remark},
+			dataType:'JSON',
+			success:function(result) {
+				if (result.code == 200) {
+					layui.use(['jquery', 'layer'],function() {
+						layer.closeAll();
+						layui.layer.msg("修改成功", {icon: 6});
+						setTimeout(function () {
+                            treeGrid.reload('ID', {
+                                where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },100)
+					})
+				} else {
+					layui.use(['jquery', 'layer'], function() {
+						layui.layer.msg(data.msg, {icon: 5});
+					});
+				}
+			}
+		})
+	}
 </script>

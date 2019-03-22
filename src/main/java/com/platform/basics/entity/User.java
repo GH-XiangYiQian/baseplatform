@@ -65,6 +65,12 @@ public class User extends BaseModel{
     /**图标*/
     private String icon;
     
+    /**是否启用用户 1启用 0未启用*/
+    private Integer enabled;
+    
+    /**最近登陆时间*/
+    private Date latelySignInTime;
+    
     /**用户对应的角色*/
     @Transient
     private List<SysRole> sysRoles;

@@ -1,5 +1,7 @@
 package com.platform.basics.service;
 
+import java.util.List;
+
 import com.platform.basics.entity.User;
 
 /**
@@ -40,6 +42,34 @@ public interface UserService {
 	 * @return	User 
 	 */
 	User findUserByAccount(String account);
+	
+	/**
+	 * .查询用户信息(模糊查询)
+	 * @author 	XiangYiQian
+	 * @param 	user
+	 * @date	2019-2-20 08:50:24
+	 * @return	List<User>
+	 */
+	List<User> findUser(User user);
+	
+	/**
+	 * .查询用户信息(精确查询)
+	 * @author 	XiangYiQian
+	 * @param	user
+	 * @date	2019-2-20 09:07:31
+	 * @return	List<User>
+	 */
+	List<User> selectUser(User user);
+	
+	/**
+	 * .更新用户信息
+	 * @author	XiangYiQian
+	 * @param	user
+	 * @date	2019-3-5 10:44:16
+	 * @return	void
+	 */
+	void updateUserById(User user);
+	
 	
 
 }

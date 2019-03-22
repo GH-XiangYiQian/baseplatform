@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.platform.basics.entity.SysPermission;
 import com.platform.basics.entity.SysRole;
+import com.platform.basics.exception.BasePlatformException;
 import com.platform.basics.mapper.basemapper.SysPermissionMapper;
 import com.platform.basics.service.SysPermissionService;
 import com.platform.basics.util.PageData;
+import com.platform.basics.util.StringUtils;
 
 @Service
 public class SysPermissionServiceImpl implements SysPermissionService{
@@ -30,8 +32,9 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	}
 
 	@Override
-	public int deleteSysPermissionById(Integer id) {
-		return sysPermissionMapper.deleteByPrimaryKey(id);
+	public void deleteSysPermissionById(Integer id) {
+		sysPermissionMapper.deleteSysPermissionByPid(id);
+		sysPermissionMapper.deleteByPrimaryKey(id);
 	}
 
 	@Override
@@ -40,7 +43,8 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	}
 
 	@Override
-	public int insertSysPermission(SysPermission sysPermission)throws Exception {
+	public int insertSysPermission(SysPermission sysPermission) {
+		validatePermission(sysPermission);
 		return sysPermissionMapper.insert(sysPermission);
 	}
 
@@ -49,4 +53,30 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 		return sysPermissionMapper.select(sysPermission);
 	}
 
+	@Override
+	public SysPermission findSysPermissionById(Integer id) {
+		return sysPermissionMapper.selectByPrimaryKey(id);
+	}
+
+	
+	/**
+	 * .校验权限信息
+	 * @author 	XiangYiQian
+	 * @param	sysPermission
+	 * @date	2019-2-19 13:49:19
+	 * @return	void
+	 */
+	public void validatePermission(SysPermission permission) {
+		// 权限名称不能为空
+		if (StringUtils.isEmpty(permission.getPermission())) {
+			throw new BasePlatformException(1, "权限名称不能为空");
+		}
+		// 权限名称不能重复
+		SysPermission v_Permission = new SysPermission();
+		v_Permission.setPermission(permission.getPermission()); 
+		List<SysPermission> sysPermission = sysPermissionMapper.select(v_Permission);
+		if (sysPermission.size() > 0) {
+			throw new BasePlatformException(2, "权限名称不能重复");
+		}
+	}
 }

@@ -1,6 +1,8 @@
 package com.platform.basics.mapper.basemapper;
 
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.platform.basics.base.BaseMapper;
@@ -44,5 +46,23 @@ public interface UserMapper extends BaseMapper<User>{
 	 * @return	User 
 	 */
 	User findUserByAccount(@Param("account")String account);
+	
+	/**
+	 * .依据条件模糊查询 用户信息
+	 * @author 	XiangYiQian
+	 * @param	user
+	 * @date	2019-2-20 08:59:08
+	 * @return	List<User>
+	 */
+	List<User> findUser(User user);
+	
+	/**
+	 * .依据Id更新用户信息
+	 * @author 	XiangYiQian
+	 * @param 	user
+	 * @date	2019-3-5 11:11:07
+	 * @return	void
+	 */
+	void updateUserById(User user);
 
 }

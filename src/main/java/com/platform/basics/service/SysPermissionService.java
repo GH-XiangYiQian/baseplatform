@@ -45,13 +45,22 @@ public interface SysPermissionService {
 	List<SysPermission> selectSysPermission(SysPermission sysPermission, PageData pageData);
 	
 	/**
+	 * .使用id查询权限信息
+	 * @author	XiangYiQian
+	 * @param	id
+	 * @date	2019-2-18 13:53:06
+	 * @return	SysPermission
+	 */
+	SysPermission findSysPermissionById(Integer id);
+	
+	/**
 	 * .依据id删除权限信息 
 	 * @author 	XiangYiQian
 	 * @param 	id
 	 * @date	2019-1-16 08:53:46
 	 * @return
 	 */
-	int deleteSysPermissionById(Integer id);
+	void deleteSysPermissionById(Integer id);
 	
 	/**
 	 * .修改权限信息
@@ -69,6 +78,6 @@ public interface SysPermissionService {
 	 * @date	2019-1-16 08:56:44
 	 * @return
 	 */
-	int insertSysPermission(SysPermission sysPermission) throws Exception;
+	int insertSysPermission(SysPermission sysPermission);
 
 }

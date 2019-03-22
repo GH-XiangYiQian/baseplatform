@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Aurora- 新增菜单</title>
+        <title></title>
         <!-- build:css -->
         <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
         <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/ztree/metro/ztree.css'}" media="all"/>
@@ -13,16 +13,17 @@
     <body>
         <div style="padding: 10px; line-height: 15px; font-weight: 300;">
             <form class="layui-form layui-form-pane" action="">
+                <input type="text" th:value="${menu.id}" name="id" hidden="hidden">
                 <div class="layui-form-item">
                     <label class="layui-form-label">菜单图标</label>
                     <div class="layui-input-block">
-                        <input type="text" value="layui-icon-tree" name="ico" id="iconPicker" lay-filter="iconPicker" class="layui-input">
+                        <input type="text" th:value="${menu.icon}" name="ico" id="iconPicker" lay-filter="iconPicker" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">菜单名称</label>
                     <div class="layui-input-block">
-                        <input name="name" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input" type="text">
+                        <input name="name" th:value="${menu.name}" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -30,27 +31,27 @@
                     <div class="layui-input-block">
                         <select name="pid" lay-filter="top" lay-verify="" lay-search>
                             <option value="0">无</option>
-                            <option th:each="m:${topMenus}" th:value="${m.id}">[[${m.name}]]</option>
+                            <option th:selected="${menu.pid == m.id}" th:each="m:${topMenus}" th:value="${m.id}">[[${m.name}]]</option>
                         </select>
                     </div>
                 </div>
                 <div id="action" class="layui-form-item" style="display: none">
                     <label class="layui-form-label">链接地址</label>
                     <div class="layui-input-block">
-                        <input name="url" lay-verify="required" placeholder="外链需加上协议，如：https://" autocomplete="off" class="layui-input" type="text">
+                        <input name="url" th:value="${menu.url}" lay-verify="required" placeholder="请输入链接地址" autocomplete="off" class="layui-input" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">菜单排序</label>
                     <div class="layui-input-block">
-                        <input name="soft" lay-verify="required" placeholder="请输入序号，序号不可重复，越小越靠前" autocomplete="off" class="layui-input" type="text">
+                        <input name="soft" th:value="${menu.soft}" lay-verify="required" placeholder="请输入序号，序号不可重复，越小越靠前" autocomplete="off" class="layui-input" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item" style="display: none" id="out_link">
                     <label class="layui-form-label">是否外链</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="iframe" value="true" title="是">
-                        <input type="radio" name="iframe" value="false" title="否" checked>
+                        <input type="radio" th:checked="${menu.iframe == true}" name="iframe" value="true" title="是">
+                        <input type="radio" th:checked="${menu.iframe == false}" name="iframe" value="false" title="否">
                     </div>
                 </div>
             </form>
@@ -73,9 +74,11 @@
                 // 数据类型：fontClass/unicode，推荐使用fontClass
                 type: 'fontClass',
                 // 是否开启搜索：true/false
-                search: true,
+                search: false,
                 // 是否开启分页
                 page: true,
+                // 是否开启搜索：true/false
+                search: true,
                 // 点击回调
                 click: function (data) {
                     console.log(data);
@@ -83,12 +86,22 @@
             });
 
             /**
-             * 选中图标 （常用于更新时默认选中图标）
+             *. 选中图标 （常用于更新时默认选中图标）
              * @param filter lay-filter
              * @param iconName 图标名称，自动识别fontClass/unicode
              */
             iconPicker.checkIcon('iconPicker', $("#iconPicker").val());
+        });
 
+        $(document).ready(function(){
+            var pid = '[[${menu.pid}]]';
+            if(pid == 0){
+                $("#out_link").hide();
+                $("#action").hide();
+            }else{
+                $("#out_link").show();
+                $("#action").show();
+            }
         });
 
         //Demo
@@ -108,30 +121,5 @@
             });
         });
 
-        $('input[name=soft]').on('input',function(){
-        	var softValue = $('input[name=soft]').val();
-        	var validateValue = softValue.replace(/[^\d]+/g,'');
-        	$('input[name=soft]').val(validateValue);
-        })
-        /* layui.config({
-            base: '/plugins/lay/layui-treeselect/src/js/' //自定义组件的目录--相对路径
-        }).use(['form', 'treeselect'], function () {
-            var form = layui.form, treeselect = layui.treeselect;
-            var data = [];
-            $.ajax({
-                async:false,
-                type:"GET",
-                url:"/role/findSysRoleResultMap",
-                dataType:"json",
-                success:function (resule) {
-                    data = resule;
-                }
-            });
-            //通过调用render方法进行渲染 [render支持链式调用]
-            treeselect.render({ //渲染第一个
-                elem: '#treeselect1', //这个设置必要为id属性且必须加上#号
-                data: data
-            }); 
-        }); */
     </script>
 </html>

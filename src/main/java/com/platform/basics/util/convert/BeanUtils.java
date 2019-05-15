@@ -1,6 +1,7 @@
 package com.platform.basics.util.convert;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -14,7 +15,7 @@ import java.lang.reflect.Field;
  * @date	2018-11-19 16:54:59
  * @update	2018-11-19 16:54:59
  */
-public class Beanutils {
+public class BeanUtils {
 	/**
 	 * 对象之间的转换(浅度的转换)
 	 * @author 	XiangYiQian
@@ -49,4 +50,53 @@ public class Beanutils {
 		}
 		System.err.println(bean);
 	}
+	
+	/**
+	 * .java轻质类型转换
+	 * @author 	XiangYiQian
+	 * @param 	<T>
+	 * @param 	clazz 目标类型
+	 * @param 	obj	  目标值
+	 * @date	2019-5-8 19:58:51
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T convertClass(Class<T> clazz, Object obj) {
+		return (T)obj;
+	}
+	
+	/**
+	 * .java强制类型转换
+	 * @author 	XiangYiQian
+	 * @param 	<T>
+	 * @param 	clazz 目标类型
+	 * @param 	obj	  目标值
+	 * @date	2019-5-8 19:59:00
+	 * @return
+	 */
+	public static <T> T castClass(Class<T> clazz, Object obj) {
+		return clazz.cast(obj);
+	}
+	
+	/**
+	 * .复制对象属性
+	 * @author 	XiangYiQian
+	 * @param   v_obj	目标对象
+	 * @param	i_Obj	复制属性的对象
+	 * @date	2019-5-15 10:26:04
+	 * 
+	 */
+	public static void copyProperties(Object v_obj, Object i_Obj) {
+		
+		try {
+			org.apache.commons.beanutils.BeanUtils.copyProperties(v_obj, i_Obj);
+		} catch (IllegalAccessException e) {		
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 }

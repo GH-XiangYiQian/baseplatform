@@ -41,19 +41,19 @@
 				,url: '/user/selectUser'
 				,page: true
 				,id: 'ID'
-				,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				,cellMinWidth: 50 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
 				,cols:[
 					[
-						{field:'id', align:'center', width:70,title:'编号'}
-						,{field:'userName', width:200, title:'用户名'}
-						,{field:'account', width:200, title:'用户账号'}
-						,{field:'sex', width:80, title:'性别'}
-						,{field:'age', width:80, title:'年龄'}
-						,{field:'mail', width:200, title:'邮箱'}
+						{field:'id', align:'center', width:60,title:'编号'}
+						,{field:'userName', width:90, title:'用户名'}
+						,{field:'account', width:90, title:'用户账号'}
+						,{field:'sex', width:60, title:'性别'}
+						,{field:'age', width:60, title:'年龄'}
+						,{field:'mail', width:165, title:'邮箱'}
 						,{field:'gmtCreate', title:'创建时间'}
 						,{field:'latelySignInTime', title:'最近登录'}
-						,{field:'enabled', align: 'center', width: 120, toolbar: '#checkLock', title: '是否允许登录'}
-						,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作',fixed: 'right'}
+						,{field:'enabled', align: 'center', width: 115, toolbar: '#checkLock', title: '是否允许登录'}
+						,{field:'operation',align:'center', width:140, toolbar: '#operation', title: '操作',fixed: 'right'}
 					]
 				]
 			})

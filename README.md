@@ -1,2 +1,2 @@
 # baseplatform
-spring boot开发平台
+spring boot
